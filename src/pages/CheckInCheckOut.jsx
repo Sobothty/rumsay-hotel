@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Calendar, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CheckinCheckout = () => {
   const [checkInDate, setCheckInDate] = useState("");
@@ -19,7 +20,7 @@ const CheckinCheckout = () => {
   const getTodayDate = () => {
     return new Date().toISOString().split("T")[0];
   };
-  
+
   const getTomorrowDate = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -144,30 +145,32 @@ const CheckinCheckout = () => {
 
             {/* Action Button */}
             <div className="mt-10 text-center">
-              <button
-                disabled={!checkInDate || !checkOutDate}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                className={`group relative inline-flex items-center justify-center px-14 py-5 bg-gradient-to-r from-[#38B6FF] to-[#6366f1] rounded-2xl text-white font-extrabold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-xl ${
-                  isHovered && checkInDate && checkOutDate
-                    ? "brightness-110"
-                    : ""
-                }`}
-              >
-                <span className="relative z-10 flex items-center tracking-wide">
-                  Confirm Dates
-                  <ArrowRight
-                    className={`ml-3 transition-transform duration-300 ${
-                      isHovered && checkInDate && checkOutDate
-                        ? "translate-x-1"
-                        : ""
-                    }`}
-                    size={22}
-                  />
-                </span>
-                {/* Button glow effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#38B6FF] to-[#6366f1] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300"></div>
-              </button>
+              <Link to="/booking">
+                <button
+                  disabled={!checkInDate || !checkOutDate}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                  className={`group relative inline-flex items-center justify-center px-14 py-5 bg-gradient-to-r from-[#38B6FF] to-[#6366f1] rounded-2xl text-white font-extrabold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-xl ${
+                    isHovered && checkInDate && checkOutDate
+                      ? "brightness-110"
+                      : ""
+                  }`}
+                >
+                  <span className="relative z-10 flex items-center tracking-wide">
+                    Confirm Dates
+                    <ArrowRight
+                      className={`ml-3 transition-transform duration-300 ${
+                        isHovered && checkInDate && checkOutDate
+                          ? "translate-x-1"
+                          : ""
+                      }`}
+                      size={22}
+                    />
+                  </span>
+                  {/* Button glow effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#38B6FF] to-[#6366f1] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300"></div>
+                </button>
+              </Link>
             </div>
 
             {/* Helper Text */}
