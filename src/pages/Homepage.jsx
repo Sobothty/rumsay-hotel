@@ -41,10 +41,15 @@ const amenities = [
   { icon: <FaSpa />, label: "Spa" },
 ];
 
+const images = [
+  "https://media.istockphoto.com/id/1333257934/photo/3d-render-of-a-hotel-waiting-lounge-with-sofa-and-armchair.jpg?s=170667a&w=is&k=20&c=dS23UBGNttINt5xfAEM_c7hQmOydbXYgEps3e47YzpQ=",
+  "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80",
+  "https://www.hotelparadies.com/redakteure/_optimized_/480/3261682/hotel-das-paradies-adults-only-aussenpool.JPG",
+  "https://cdn.prod.website-files.com/62a1ad9e66ad7514469f0685/65ca12eaa3f9de8456ba4be5_blog-hero%20image-dining%20experience.jpg",
+];
+const labels = ["Lobby", "Suite", "Pool", "Restaurant"];
+
 export default function Homepage() {
-
-
-
   return (
     <>
       <main className="w-full m-auto max-w-7xl ">
@@ -138,22 +143,20 @@ export default function Homepage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
+            {images.map((url, i) => (
               <div
                 key={i}
                 className="relative h-64 rounded-xl overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gray-800 group-hover:opacity-90 transition-opacity">
                   <img
-                    src={`https://source.unsplash.com/random/600x600/?hotel,luxury,${i}`}
-                    alt="Hotel space"
+                    src={url}
+                    alt={labels[i]}
                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
                 <div className="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/70 via-transparent to-transparent">
-                  <h3 className="text-white font-medium">
-                    {["Lobby", "Suite", "Pool", "Restaurant"][i - 1]}
-                  </h3>
+                  <h3 className="text-white font-medium">{labels[i]}</h3>
                 </div>
               </div>
             ))}
@@ -187,7 +190,7 @@ export default function Homepage() {
         <section className="bg-white py-16 px-6">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
             <img
-              src="/preview-hotel.jpg" // Change this to your preview image path
+              src="https://img.freepik.com/free-vector/flat-landing-page-template-hotel-accommodation_23-2150311165.jpg" // Change this to your preview image path
               alt="Hotel Preview"
               className="w-full h-80 object-cover rounded-2xl shadow-lg"
             />
@@ -211,10 +214,11 @@ export default function Homepage() {
           </div>
         </section>
         {/* Gallery */}
-        <section className="w-full">
+        
+      </main>
+      <section className="w-full">
           <Gallery />
         </section>
-      </main>
     </>
   );
 }
