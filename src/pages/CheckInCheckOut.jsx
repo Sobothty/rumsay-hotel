@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -6,6 +6,16 @@ const CheckinCheckout = () => {
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [isHovered, setIsHovered] = useState(false);
+
+  // Save check-in and check-out dates to localStorage when they change
+  useEffect(() => {
+    if (checkInDate) {
+      localStorage.setItem("checkInDate", checkInDate);
+    }
+    if (checkOutDate) {
+      localStorage.setItem("checkOutDate", checkOutDate);
+    }
+  }, [checkInDate, checkOutDate]);
 
   const formatDate = (dateString) => {
     if (!dateString) return "";

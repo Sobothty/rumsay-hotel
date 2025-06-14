@@ -8,7 +8,7 @@ const AllRoomsType = ({ onBook, selectedPrices = [], selectedTypes = [] }) => {
     const fetchRoomTypes = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_URL}/api/room-types`
+          `${import.meta.env.VITE_BASE_URL}/api/rooms`
         );
         const result = await res.json();
         setRoomTypes(result.data || []);
@@ -25,11 +25,11 @@ const AllRoomsType = ({ onBook, selectedPrices = [], selectedTypes = [] }) => {
       selectedPrices.length === 0
         ? true
         : selectedPrices.some(
-            (range) => room.price >= range.min && room.price <= range.max
+            (range) => room.room_type.price >= range.min && room.room_type.price <= range.max
           )
     )
     .filter((room) =>
-      selectedTypes.length === 0 ? true : selectedTypes.includes(room.type)
+      selectedTypes.length === 0 ? true : selectedTypes.includes(room.room_type.type)
     );
 
   return (
@@ -41,17 +41,17 @@ const AllRoomsType = ({ onBook, selectedPrices = [], selectedTypes = [] }) => {
         >
           <div className="relative">
             <img
-              src={room.image_url || "src/assets/categories/category-room.jpg"}
-              alt={room.type}
+              src={room.room_image || "src/assets/categories/category-room.jpg"}
+              alt={room.room_type.type}
               className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"
             />
             <span className="absolute top-4 left-4 bg-gradient-to-r from-[#2a1a4a] to-[#4b2e83] text-white px-4 py-1 rounded-full text-xs font-semibold shadow">
-              {room.type}
+              {room.room_type.type}
             </span>
           </div>
           <div className="p-6 flex flex-col flex-1">
             <h3 className="text-2xl font-extrabold text-[#2a1a4a] mb-2">
-              {room.type}
+              {room.room_number}
             </h3>
             <p className="text-gray-600 text-base mb-4 line-clamp-2">
               {room.description}
@@ -61,12 +61,12 @@ const AllRoomsType = ({ onBook, selectedPrices = [], selectedTypes = [] }) => {
                 <span role="img" aria-label="guests">
                   👥
                 </span>{" "}
-                {room.capacity} Guests
+                Flexible Guests
               </li>
             </ul>
             <div className="flex items-center justify-between mt-auto">
               <span className="text-2xl font-bold text-[#2a1a4a]">
-                ${room.price}
+                ${room.room_type.price}
                 <span className="text-base font-medium text-gray-500">
                   /night
                 </span>

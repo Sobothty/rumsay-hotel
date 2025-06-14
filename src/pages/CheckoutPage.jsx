@@ -175,12 +175,30 @@ const Separator = ({ className = "", ...props }) => (
   />
 );
 
+// Utility: get array of room ids from cartItems in localStorage
+const getCartRoomIds = () => {
+  const cartData = localStorage.getItem("cartItems");
+  console.log("Cart Data:", cartData); // Debug: check cart data
+  if (!cartData) return [];
+  try {
+    const cartItems = JSON.parse(cartData);
+    console.log("cardItms: ", cartItems)
+    const roomIds = cartItems.map((item) => item.id);
+    console.log("Cart Items id:", roomIds) 
+    return roomIds;
+  } catch (error){
+    return console.log("Error parsing cart items:", error);
+  }
+};
+
 export default function HotelCheckoutPage() {
   // State declarations first to avoid reference errors
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
-  const [isHovered, setIsHovered] = useState(false);
-  const [specialRequests, setSpecialRequests] = useState("");
+  const [checkInDate, setCheckInDate] = useState(
+    () => localStorage.getItem("checkInDate") || ""
+  );
+  const [checkOutDate, setCheckOutDate] = useState(
+    () => localStorage.getItem("checkOutDate") || ""
+  );
   const [cartItems, setCartItems] = useState([]);
   const [bookingDetails, setBookingDetails] = useState({
     checkIn: "",
@@ -241,7 +259,7 @@ export default function HotelCheckoutPage() {
   };
 
   const roomsTotal = cartItems.reduce(
-    (sum, room) => sum + calculateRoomTotal(room),
+    (sum, room) => sum + calculateRoomTotal(room.room_type.price),
     0
   );
 
@@ -284,7 +302,6 @@ export default function HotelCheckoutPage() {
         const parsedCart = JSON.parse(cartData);
         setCartItems(parsedCart);
 
-        // Set booking details from cart data
         setBookingDetails((prev) => ({
           ...prev,
           rooms: parsedCart,
@@ -369,60 +386,32 @@ export default function HotelCheckoutPage() {
   // Utility: calculate total price for a room
   const getTotalPriceForRoom = (room) => {
     const nights = getNightsForRoom();
-    return Number.parseFloat(room.price) * nights;
+    return Number.parseFloat(room.room_type.price) * nights;
   };
 
-  // Calculate total payment (in dollars) and amount (in cents for Stripe)
+  // Utility: calculate total price for all rooms in cart
+  const getTotalAllRoomPrice = (rooms) => {
+    if (!Array.isArray(rooms)) return 0;
+    return rooms.reduce(
+      (sum, room) => sum + Number(room?.room_type?.price || 0),
+      0
+    );
+  };
+
   const total_payment = roomsTotal;
   const amount = Math.round(roomsTotal * 100);
 
-  // Fetch all rooms on mount using fetch (not axios)
-  useEffect(() => {
-    async function fetchAllRoomsAndSetAvailable() {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms`);
-        const data = await res.json();
-        // Check if the result is as expected
-        if (data && data.result === true && Array.isArray(data.data)) {
-          console.log("Rooms retrieved successfully:", data.data);
-        } else {
-          console.error("Unexpected rooms API response:", data);
-        }
-        const allRooms = data.data;
-
-        // Get cartItems from localStorage
-        const cartData = localStorage.getItem("cartItems");
-        const cartItems = cartData ? JSON.parse(cartData) : [];
-
-        // For each cartItem, find a matching available room (room_type.id === cartItem.id && is_active)
-        const available = [];
-        cartItems.forEach((cartItem) => {
-          const found = allRooms.find(
-            (room) =>
-              room.room_type.id === cartItem.id &&
-              room.is_active === true &&
-              !available.some((r) => r.id === room.id)
-          );
-          if (found) available.push(found);
-        });
-
-        setAllRooms(allRooms);
-        setCartItems(cartItems);
-        setAvailableRooms(available);
-      } catch (err) {
-        console.error("Error fetching rooms:", err);
-        setAllRooms([]);
-        setAvailableRooms([]);
-      }
-    }
-    fetchAllRoomsAndSetAvailable();
-  }, []);
-
   // Calculate total price for all available rooms
   const totalRoomPrice = availableRooms.reduce(
-    (sum, room) => sum + Number(room.room_type?.price || 0),
+    (sum, room) => sum + Number(room.room_type.price || 0),
     0
   );
+
+  // Calculate total price for all rooms in cartItems
+  const totalCartRoomPrice = getTotalAllRoomPrice(cartItems);
+
+  // Get room ids from cartItems in localStorage as an array
+  const cartRoomIds = getCartRoomIds();
 
   return (
     <div className="min-h-screen bg-gradient-to-b bg-gray-50 py-10">
@@ -522,6 +511,7 @@ export default function HotelCheckoutPage() {
                       <Calendar className="w-4 h-4 text-blue-600" />
                       Check-in Date
                     </Label>
+                    {/* Check in data */}
                     <div className="relative">
                       <input
                         type="date"
@@ -605,7 +595,7 @@ export default function HotelCheckoutPage() {
             </Card>
 
             {/* Payment Information */}
-            {/* <Card className="overflow-hidden transform transition-all duration-300 hover:shadow-xl">
+            <Card className="overflow-hidden transform transition-all duration-300 hover:shadow-xl">
               <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-800"></div>
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-3">
@@ -625,15 +615,13 @@ export default function HotelCheckoutPage() {
                     securely.
                   </p>
                   {amount > 0 ? (
-                    <StripeContainer>
-                      <PaymentForm
-                        amount={amount}
-                        total_payment={total_payment}
-                        check_in_date={checkInDate || bookingDetails.checkIn}
-                        check_out_date={checkOutDate || bookingDetails.checkOut}
-                        room_ids={availableRooms.map((r) => r.id)}
-                      />
-                    </StripeContainer>
+                    <StripeContainer
+                      amount={totalCartRoomPrice}
+                      check_in_date={checkInDate}
+                      check_out_date={checkOutDate}
+                      room_ids={cartRoomIds}
+                      total_payment={total_payment}
+                    />
                   ) : (
                     <div className="text-center text-blue-600 py-8">
                       {amount === 0
@@ -643,7 +631,7 @@ export default function HotelCheckoutPage() {
                   )}
                 </div>
               </div>
-            </Card> */}
+            </Card>
           </div>
 
           {/* Right Column - Booking Summary */}
@@ -661,8 +649,8 @@ export default function HotelCheckoutPage() {
                     <div className="flex items-start space-x-4">
                       <div className="relative">
                         <img
-                          src={room.image_url || "/placeholder.svg"}
-                          alt={room.type}
+                          src={room.room_image || "/placeholder.svg"}
+                          alt={room.room_type.type}
                           className="w-24 h-20 object-cover rounded-lg shadow-md border border-blue-100"
                         />
                         <div className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md">
@@ -672,7 +660,7 @@ export default function HotelCheckoutPage() {
                       <div className="flex-1">
                         <div className="flex justify-between">
                           <h4 className="font-medium text-blue-800">
-                            {room.type}
+                            {room.room_number}
                           </h4>
                           <button
                             onClick={() => handleRemoveRoom(room.id)}
@@ -682,16 +670,13 @@ export default function HotelCheckoutPage() {
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {room.description}
-                        </p>
                         <div className="flex items-center text-sm text-blue-600 mt-1">
                           <Users className="w-4 h-4 mr-1" />
                           <span>Capacity: 3 Guests</span>
                         </div>
                         <div className="flex items-center text-sm mt-2 bg-blue-50 p-2 rounded-md">
                           <span className="font-medium text-blue-800">
-                            ${room.price}
+                            ${room.room_type.price}
                           </span>
                           <span className="mx-1 text-blue-600">×</span>
                           <span className="text-blue-600">
@@ -713,7 +698,7 @@ export default function HotelCheckoutPage() {
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Subtotal</span>
                     <span className="font-medium">
-                      ${totalRoomPrice.toFixed(2)}
+                      ${totalCartRoomPrice.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between text-lg font-semibold bg-blue-100 p-3 rounded-lg mt-2">
@@ -742,14 +727,6 @@ export default function HotelCheckoutPage() {
                     rate.
                   </p>
                 </div>
-
-                <button
-                  className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold text-lg shadow hover:bg-blue-700 transition"
-                  type="button"
-                  // onClick={...} // Add handler if needed
-                >
-                  Complete Booking - ${roomsTotal.toFixed(2)}
-                </button>
 
                 <p className="text-xs text-gray-500 text-center">
                   By completing your booking, you agree to our Terms of Service

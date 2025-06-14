@@ -191,12 +191,7 @@ export default function NavbarPage() {
                   <button onClick={handleCheckout} className="bg-blue-600 text-sm text-white rounded-4xl px-5 py-3 shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300">
                     Checkout
                   </button>
-                  {/* <button
-                    onClick={() => navigate("/checkout")}
-                    className="bg-blue-600 text-sm text-white rounded-4xl px-5 py-3 shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
-                  >
-                    Checkout
-                  </button> */}
+                  
                 </div>
                 {cartItems.length === 0 ? (
                   <div className="px-6 py-8 text-gray-400 text-center">
@@ -212,18 +207,18 @@ export default function NavbarPage() {
                       >
                         <img
                           src={
-                            item.image_url ||
+                            item.room_image ||
                             "/src/assets/categories/category-room.jpg"
                           }
-                          alt={item.type}
+                          alt={item.room_type.type}
                           className="w-16 h-16 rounded-xl object-cover border border-gray-200 dark:border-gray-700 shadow"
                         />
                         <div className="flex-1">
                           <div className="font-semibold text-gray-800 dark:text-gray-100 text-base">
-                            {item.type}
+                            {item.room_number}
                           </div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">
-                            ${item.price}/night
+                            ${item.room_type.price}/night
                           </div>
                         </div>
                         <button

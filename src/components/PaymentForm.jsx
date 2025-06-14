@@ -108,24 +108,17 @@ export default function PaymentForm({
           <h2 className="text-2xl font-bold text-blue-700 mb-2">
             Payment Details
           </h2>
-          <p className="text-gray-600 mb-2">
-            Please enter your card information below to complete your booking.
-          </p>
+          <p className="text-gray-600 mb-2">Complete your booking below.</p>
           <div className="flex justify-between items-center bg-blue-50 rounded-lg px-4 py-3 mb-2">
             <span className="font-semibold text-blue-800">Total</span>
             <span className="text-xl font-bold text-blue-700">
               ${(amount / 100).toFixed(2)}
             </span>
           </div>
-          <div className="flex gap-2 mt-2">
-            <img src="/visa.svg" alt="Visa" className="h-6" />
-            <img src="/mastercard.svg" alt="Mastercard" className="h-6" />
-            <img src="/amex.svg" alt="Amex" className="h-6" />
-            <img src="/discover.svg" alt="Discover" className="h-6" />
-          </div>
         </div>
 
-        <CardElement />
+        {/* Stripe Element UI */}
+        <PaymentElement />
 
         <button
           type="submit"
