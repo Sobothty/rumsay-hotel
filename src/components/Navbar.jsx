@@ -13,8 +13,6 @@ import axios from "axios";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about-us" },
-  { name: "Services", href: "/services" },
-  { name: "Pricing", href: "/pricing" },
   { name: "Contact", href: "/contact-us" },
 ];
 
