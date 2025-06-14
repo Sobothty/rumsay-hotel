@@ -182,11 +182,12 @@ const getCartRoomIds = () => {
   if (!cartData) return [];
   try {
     const cartItems = JSON.parse(cartData);
-    console.log("cardItms: ", cartItems)
+    console.log("cardItms: ", cartItems);
     const roomIds = cartItems.map((item) => item.id);
-    console.log("Cart Items id:", roomIds) 
+    console.log("Cart Items id:", roomIds);
+    localStorage.setItem("RoomIds", JSON.stringify(roomIds));
     return roomIds;
-  } catch (error){
+  } catch (error) {
     return console.log("Error parsing cart items:", error);
   }
 };
@@ -408,7 +409,9 @@ export default function HotelCheckoutPage() {
   );
 
   // Calculate total price for all rooms in cartItems
-  const totalCartRoomPrice = getTotalAllRoomPrice(cartItems);
+ // After calculating totalCartRoomPrice
+const totalCartRoomPrice = getTotalAllRoomPrice(cartItems);
+localStorage.setItem('totalCartRoomPrice', totalCartRoomPrice);
 
   // Get room ids from cartItems in localStorage as an array
   const cartRoomIds = getCartRoomIds();
@@ -614,14 +617,8 @@ export default function HotelCheckoutPage() {
                     Enter your payment details below to complete your booking
                     securely.
                   </p>
-                  {amount > 0 ? (
-                    <StripeContainer
-                      amount={totalCartRoomPrice}
-                      check_in_date={checkInDate}
-                      check_out_date={checkOutDate}
-                      room_ids={cartRoomIds}
-                      total_payment={total_payment}
-                    />
+                  {totalCartRoomPrice > 0 ? (
+                    <StripeContainer />
                   ) : (
                     <div className="text-center text-blue-600 py-8">
                       {amount === 0
@@ -704,7 +701,7 @@ export default function HotelCheckoutPage() {
                   <div className="flex justify-between text-lg font-semibold bg-blue-100 p-3 rounded-lg mt-2">
                     <span className="text-blue-800">Total</span>
                     <span className="text-blue-800">
-                      ${roomsTotal.toFixed(2)}
+                      ${totalCartRoomPrice.toFixed(2)}
                     </span>
                   </div>
                 </div>
