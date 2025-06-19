@@ -19,7 +19,7 @@ import RoomDetail from "./components/RoomDetail";
 import CheckoutPage from "./pages/CheckoutPage";
 import CheckinCheckout from "./pages/CheckInCheckOut";
 import PaymentSuccess from "./components/PaymentSuccess";
-import { SocialCallBack } from "./pages/SocialCallBack";
+import SocialCallBack from "./pages/SocialCallBack";
 
 function App() {
   return (
