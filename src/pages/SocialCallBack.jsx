@@ -5,7 +5,7 @@ export const SocialCallBack = () => {
   const navigate = useNavigate();
 
   const email = new URLSearchParams(window.location.search).get("email");
-  fetch(`${import.meta.env.VITE_API_URL}/auth/social/callback`, {
+  fetch(`${import.meta.env.VITE_BASE_URL}/auth/social/callback`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
