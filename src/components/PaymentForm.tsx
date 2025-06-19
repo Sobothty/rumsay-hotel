@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const getTotalCartRoomPriceFromLocalStorage = () => {
   const value = localStorage.getItem("totalCartRoomPrice");
@@ -34,6 +36,8 @@ const CheckoutForm = () => {
   const [roomIds, setRoomIds] = useState<number[]>([]);
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Initializing checkout data...");
@@ -89,7 +93,9 @@ const CheckoutForm = () => {
       );
 
       console.log("Stripe payment response:", response.data);
-      alert(response.data.message);
+      if (!response.data || !response.data.message) {
+        throw new Error("Invalid response from payment API");
+      }
 
       if (response.data.message === "Payment successful") {
         console.log("Payment was successful, sending booking request...");
@@ -122,7 +128,7 @@ const CheckoutForm = () => {
           );
 
           console.log("Booking API response:", booking.data);
-          alert("Booking successful!");
+          
         } catch (bookingError: any) {
           console.error("Booking API error:", bookingError);
           alert(
@@ -146,6 +152,8 @@ const CheckoutForm = () => {
     localStorage.removeItem("roomIds");
     localStorage.removeItem("amount");
     localStorage.removeItem("cartItems");
+
+    navigate("/payment-success")
   };
 
   return (

@@ -19,6 +19,7 @@ import RoomDetail from "./components/RoomDetail";
 import CheckoutPage from "./pages/CheckoutPage";
 import CheckinCheckout from "./pages/CheckInCheckOut";
 import PaymentSuccess from "./components/PaymentSuccess";
+import { SocialCallBack } from "./pages/SocialCallBack";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="room-detail/:id" element={<RoomDetail />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="payment-success" element={<PaymentSuccess />} />
+          <Route path="social/callback" element={<SocialCallBack />} />
         </Route>
         <Route path="/check-in-out" element={<CheckinCheckout />} />
         {/* Admin pages without RootLayout (no navbar/footer) */}

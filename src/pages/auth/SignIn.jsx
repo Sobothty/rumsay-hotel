@@ -67,6 +67,8 @@ const SignIn = () => {
     }
   };
 
+  const handleGoogleSignIn = () => {};
+
   return (
     <section className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-500">
       {/* Left Side - Form */}
@@ -166,28 +168,19 @@ const SignIn = () => {
                   className="flex gap-2 animate-fade-in"
                   style={{ animationDelay: "0.4s" }}
                 >
-                  <button
-                    type="button"
+                  <a
+                    href="https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect"
                     className="flex-1 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
-                    <img
-                      src="src/assets/signup/google.png"
-                      alt="Google"
-                      className="h-5 mr-2"
-                    />
-                    Google
-                  </button>
-                  <button
-                    type="button"
-                    className="flex-1 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
-                  >
-                    <img
-                      src="src/assets/signup/facebook.png"
-                      alt="Facebook"
-                      className="h-5 mr-2"
-                    />
-                    Facebook
-                  </button>
+                    <button type="button" className="flex items-center">
+                      <img
+                        src="src/assets/signup/google.png"
+                        alt="Google"
+                        className="h-5 mr-2"
+                      />
+                      Google
+                    </button>
+                  </a>
                 </div>
               </Form>
             )}
