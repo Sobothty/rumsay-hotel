@@ -4,6 +4,10 @@ import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import Banner from "../../assets/banner.jpg";
+import Google from "../../assets/signup/google.png";
+import Github from "../../assets/signup/github.png";
+
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -65,15 +69,6 @@ const SignIn = () => {
       setLoading(false);
       setSubmitting(false);
     }
-  };
-
-  const handleGoogleLogin = () => {
-
-    // Build the full URL to the backend with the frontend URL as a query parameter
-    const backendRedirect = `https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect`;
-
-    // Redirect the browser to the backend
-    return backendRedirect;
   };
 
   return (
@@ -175,20 +170,30 @@ const SignIn = () => {
                   className="flex gap-2 animate-fade-in"
                   style={{ animationDelay: "0.4s" }}
                 >
- <a href="https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect">
-                   <button
-                    type="button"
+                  <a
+                    href="https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect"
                     className="flex flex-1 items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
-                    
-                    <img
-                      src="src/assets/signup/google.png"
-                      alt="Google"
-                      className="h-5 mr-2"
-                    />
-                    Google
-                  </button>
- </a>
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-full"
+                    >
+                      <img src={Google} alt="Google" className="h-5 mr-2" />
+                      Google
+                    </button>
+                  </a>
+                  <a
+                    href="https://api-hotel-production-ee3e.up.railway.app/api/auth/github/redirect"
+                    className="flex flex-1 items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
+                  >
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-full"
+                    >
+                      <img src={Github} alt="Google" className="h-5 mr-2" />
+                      GitHub
+                    </button>
+                  </a>
                 </div>
               </Form>
             )}
@@ -210,7 +215,7 @@ const SignIn = () => {
         style={{ animationDelay: "0.2s" }}
       >
         <img
-          src="src/assets/signup/left-pic_signup.png"
+          src={Banner}
           alt="Room"
           className="w-full h-full object-cover rounded-l-2xl shadow-2xl min-h-screen"
         />

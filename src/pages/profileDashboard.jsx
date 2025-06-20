@@ -91,11 +91,11 @@ const ProfileDashboard = () => {
     try {
       const token = localStorage.getItem("authToken");
       // remove avatar (ignore profile image field)
-      const { avatar, ...formDataWithoutAvatar } = form; 
+      const { avatar, ...formDataWithoutAvatar } = form;
       const response = await fetch(
         `${import.meta.env.VITE_BASE_URL}/api/profile`,
         {
-          method: "POST", 
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const ProfileDashboard = () => {
           body: JSON.stringify(formDataWithoutAvatar),
         }
       );
-  
+
       const json = await response.json();
       console.log("API response:", json); // Add debug info
       if (response.ok && json.result && json.data) {
@@ -119,7 +119,6 @@ const ProfileDashboard = () => {
     }
     setSaving(false);
   };
-  
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -333,16 +332,6 @@ const ProfileDashboard = () => {
                   required
                 />
               </div>
-              {/* <div>
-                <label className="block text-sm font-medium mb-2">Gender</label>
-                <input
-                  type="text"
-                  name="gender"
-                  value={form.gender || ""}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500"
-                />
-              </div> */}
               <div>
                 <label className="block text-sm font-medium mb-2">Gender</label>
                 <select
