@@ -11,6 +11,7 @@ import {
   Shield,
   Tag,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ProfileDashboard = () => {
   const [profile, setProfile] = useState(null);
@@ -26,6 +27,11 @@ const ProfileDashboard = () => {
   const [ratingValue, setRatingValue] = useState(5);
   const [ratingComment, setRatingComment] = useState("");
   const [ratingLoading, setRatingLoading] = useState(false);
+  const [cancelDialog, setCancelDialog] = useState({
+    open: false,
+    bookingId: null,
+  });
+  const [bookingStatusFilter, setBookingStatusFilter] = useState("all");
 
   useEffect(() => {
     fetchUserData();
@@ -153,6 +159,11 @@ const ProfileDashboard = () => {
     }
   };
 
+  const filteredBookings =
+    bookingStatusFilter === "all"
+      ? bookings
+      : bookings.filter((b) => b.booking_status === bookingStatusFilter);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -167,16 +178,13 @@ const ProfileDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen max-w-7xl m-auto bg-white/90 to-indigo-100">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text">
-            Profile Dashboard
-          </h1>
-        </div>
+      <div className="bg-while/90 w-full pt-20">
+        <h1 className="text-3xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text">
+          Profile Dashboard
+        </h1>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Card */}
         <div className="lg:col-span-1">
@@ -240,8 +248,25 @@ const ProfileDashboard = () => {
               </div>
             </div>
 
+            {/* Booking Status Filter */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2">
+                Filter by Status
+              </label>
+              <select
+                value={bookingStatusFilter}
+                onChange={(e) => setBookingStatusFilter(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
+              >
+                <option value="all">All</option>
+                <option value="completed">Completed</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+
             <div className="space-y-4">
-              {bookings.map((booking) => (
+              {filteredBookings.map((booking) => (
                 <div
                   key={booking.id}
                   className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition-transform hover:scale-[1.02]"
@@ -299,17 +324,32 @@ const ProfileDashboard = () => {
                         ${booking.payment.total_payment}
                       </div>
                       {/* Show Rating button only if booking is NOT completed */}
-                      {booking.booking_status !== "completed" && (
+                      {booking.booking_status !== "completed" &&
+                        booking.booking_status !== "cancelled" && (
+                          <button
+                            className="mt-2 px-4 py-2 bg-yellow-400 text-white rounded-lg font-semibold hover:bg-yellow-500 transition"
+                            onClick={() => {
+                              setRatingDialog({
+                                open: true,
+                                bookingId: booking.id,
+                              });
+                            }}
+                          >
+                            Rating
+                          </button>
+                        )}
+                      {/* Show Cancel button only if booking is confirmed */}
+                      {booking.booking_status === "confirmed" && (
                         <button
-                          className="mt-2 px-4 py-2 bg-yellow-400 text-white rounded-lg font-semibold hover:bg-yellow-500 transition"
-                          onClick={() => {
-                            setRatingDialog({
+                          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition"
+                          onClick={() =>
+                            setCancelDialog({
                               open: true,
                               bookingId: booking.id,
-                            });
-                          }}
+                            })
+                          }
                         >
-                          Rating
+                          Cancel
                         </button>
                       )}
                     </div>
@@ -500,6 +540,71 @@ const ProfileDashboard = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Cancel Dialog */}
+      {cancelDialog.open && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+              📢 Cancellation Policy
+            </h3>
+            <ul className="mb-6 text-gray-700 text-sm list-disc pl-5 space-y-1">
+              <li>Free cancellation up to 48 hours before check-in.</li>
+              <li>100% charge if canceled.</li>
+              <li>No refund if canceled within 5 hours or for no-shows.</li>
+              <li>
+                Refunds (if applicable) are processed within 5-7 business days.
+              </li>
+            </ul>
+            <p className="mb-6 text-gray-800 font-medium">
+              Do you accept these terms and wish to proceed with your booking
+              cancellation?
+            </p>
+            <div className="flex gap-4">
+              <button
+                className="flex-1 bg-red-500 text-white py-3 px-4 rounded-xl font-semibold shadow-md hover:bg-red-600"
+                onClick={async () => {
+                  try {
+                    const token = localStorage.getItem("authToken");
+                    const response = await fetch(
+                      `${import.meta.env.VITE_BASE_URL}/api/bookings/${
+                        cancelDialog.bookingId
+                      }/cancel`,
+                      {
+                        method: "DELETE",
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                          "Content-Type": "application/json",
+                        },
+                      }
+                    );
+                    const json = await response.json();
+                    if (response.ok && json.result) {
+                      toast.success("Booking cancelled successfully!");
+                      setCancelDialog({ open: false, bookingId: null });
+                      fetchBookings();
+                    } else {
+                      toast.error(json.message || "Failed to cancel booking.");
+                    }
+                  } catch (err) {
+                    alert("Failed to cancel booking.");
+                  }
+                }}
+              >
+                Accept
+              </button>
+              <button
+                className="flex-1 bg-gray-100 text-gray-700 py-3 px-4 rounded-xl font-semibold hover:bg-gray-200"
+                onClick={() =>
+                  setCancelDialog({ open: false, bookingId: null })
+                }
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
