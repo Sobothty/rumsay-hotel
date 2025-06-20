@@ -73,7 +73,7 @@ const SignIn = () => {
     const backendRedirect = `https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect`;
 
     // Redirect the browser to the backend
-    window.location.href = backendRedirect;
+    return backendRedirect;
   };
 
   return (
