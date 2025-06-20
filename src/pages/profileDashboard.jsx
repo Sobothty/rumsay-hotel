@@ -90,24 +90,30 @@ const ProfileDashboard = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     try {
       const token = localStorage.getItem("authToken");
-      // remove avatar (ignore profile image field)
-      const { avatar, ...formDataWithoutAvatar } = form;
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("gender", form.gender);
+      if (form.avatarFile) {
+        formData.append("avatar", form.avatarFile);
+      }
+
       const response = await fetch(
         `${import.meta.env.VITE_BASE_URL}/api/profile`,
         {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            // Do NOT set Content-Type here; browser will set it for FormData
           },
-          body: JSON.stringify(formDataWithoutAvatar),
+          body: formData,
         }
       );
 
       const json = await response.json();
-      console.log("API response:", json); // Add debug info
+      console.log("API response:", json);
       if (response.ok && json.result && json.data) {
-        setProfile(json.data); // Update profile with returned data
+        setProfile(json.data);
         setEditing(false);
       } else {
         console.error("Profile update failed:", json.message || json);
@@ -344,6 +350,26 @@ const ProfileDashboard = () => {
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Avatar</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setForm({ ...form, avatarFile: e.target.files[0] });
+                    }
+                  }}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
+                />
+                {form.avatarFile && (
+                  <img
+                    src={URL.createObjectURL(form.avatarFile)}
+                    alt="Preview"
+                    className="w-20 h-20 rounded-full mt-2 object-cover"
+                  />
+                )}
               </div>
             </div>
 
