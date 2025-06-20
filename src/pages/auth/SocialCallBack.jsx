@@ -47,11 +47,8 @@ export default function SocialCallBack() {
           <span className="block w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></span>
         </div>
         <h1 className="text-2xl font-bold text-blue-700 mb-2">
-          Logging you in...
+          Loading .....
         </h1>
-        <p className="text-gray-500">
-          Please wait while we authenticate your account.
-        </p>
       </div>
     </div>
   );
