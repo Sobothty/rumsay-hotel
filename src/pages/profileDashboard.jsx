@@ -243,26 +243,44 @@ const ProfileDashboard = () => {
                 <Calendar className="w-6 h-6 text-blue-600" />
                 My Bookings
               </h3>
-              <div className="text-sm text-gray-500">
-                {bookings.length} active bookings
+              <div className="flex items-center gap-2 bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-2 rounded-xl shadow-sm border border-blue-100">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 font-bold text-base">
+                  {filteredBookings.length}
+                </span>
+                <span className="text-gray-700 font-medium">
+                  {filteredBookings.length === 1
+                    ? "Active Booking"
+                    : "Active Bookings"}
+                </span>
               </div>
             </div>
 
             {/* Booking Status Filter */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2">
+              <label className="block text-sm font-medium mb-2 text-gray-700">
                 Filter by Status
               </label>
-              <select
-                value={bookingStatusFilter}
-                onChange={(e) => setBookingStatusFilter(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
-              >
-                <option value="all">All</option>
-                <option value="completed">Completed</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
+              <div className="relative">
+                <select
+                  value={bookingStatusFilter}
+                  onChange={(e) => setBookingStatusFilter(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white transition-all duration-200 outline-none hover:border-blue-400 hover:shadow-md"
+                  style={{
+                    WebkitAppearance: "none",
+                    MozAppearance: "none",
+                    appearance: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="all">All</option>
+                  <option value="completed">Completed</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                  ▼
+                </span>
+              </div>
             </div>
 
             <div className="space-y-4">
