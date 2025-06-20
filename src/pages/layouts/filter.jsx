@@ -5,21 +5,13 @@ const priceRanges = [
   { label: "$51 - $100", min: 51, max: 100 },
   { label: "$101+", min: 101, max: Infinity },
 ];
-const amenitiesList = [
-  "Free Wi-Fi",
-  "Air Conditioning",
-  "Bathtub",
-  "Balcony",
-  "Breakfast Included",
-];
-const guestOptions = [1, 2, 3, 4, 5];
 
 // RoomFilter component
 const RoomFilter = ({
   selectedTypes,
   setSelectedTypes,
-  selectedPrice, // now should be selectedPrices (array)
-  setSelectedPrice, // now should be setSelectedPrices
+  selectedPrice,
+  setSelectedPrice,
   selectedAmenities,
   setSelectedAmenities,
   guests,
@@ -27,6 +19,8 @@ const RoomFilter = ({
 }) => {
   // Fetch room types from API
   const [roomTypes, setRoomTypes] = useState([]);
+  // Responsive: sidebar open state
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchRoomTypes = async () => {
@@ -35,7 +29,6 @@ const RoomFilter = ({
           `${import.meta.env.VITE_BASE_URL}/api/room-types`
         );
         const result = await res.json();
-        // Extract unique types from API data
         const types = Array.from(
           new Set((result.data || []).map((r) => r.type))
         );
@@ -47,14 +40,114 @@ const RoomFilter = ({
     fetchRoomTypes();
   }, []);
 
-  // Ensure selectedPrices is always an array
   const selectedPrices = Array.isArray(selectedPrice) ? selectedPrice : [];
-
   const setSelectedPrices = setSelectedPrice;
 
   const toggleItem = (stateSetter, value) => {
     stateSetter((prev) => {
-      // Ensure prev is always an array
+      const arr = Array.isArray(prev) ? prev : [];
+      return arr.includes(value)
+        ? arr.filter((item) => item !== value)
+        : [...arr, value];
+    });
+  };
+
+  // Responsive: handle close on overlay click
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) setOpen(false);
+  };
+
+  return (
+    <>
+      {/* Mobile Filter Button */}
+      <button
+        className="md:hidden fixed bottom-4 right-4 z-[9999] bg-[#2a1a4a] text-white p-2 rounded-full shadow-lg flex items-center justify-center"
+        style={{ width: 36, height: 36, fontSize: 18 }}
+        onClick={() => setOpen((prev) => !prev)} // <-- Toggle open/close
+        aria-label={open ? "Close filters" : "Open filters"}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d={open ? "M6 18L18 6M6 6l12 12" : "M4 6h16M6 12h12M10 18h4"}
+          />
+        </svg>
+      </button>
+
+      {/* Overlay and Sidebar for mobile */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-[9999] flex md:hidden"
+          onClick={handleOverlayClick}
+        >
+          <aside className="relative w-72 max-w-full bg-white rounded-2xl p-4 m-auto h-[90vh] max-h-screen overflow-y-auto shadow-lg animate-slide-in">
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-2xl text-gray-500 hover:text-[#2a1a4a] font-bold"
+              onClick={() => setOpen(false)}
+              aria-label="Close filters"
+            >
+              &times;
+            </button>
+            {/* Filter Content */}
+            <FilterContent
+              roomTypes={roomTypes}
+              selectedTypes={selectedTypes}
+              setSelectedTypes={setSelectedTypes}
+              selectedPrices={selectedPrices}
+              setSelectedPrices={setSelectedPrices}
+              selectedAmenities={selectedAmenities}
+              setSelectedAmenities={setSelectedAmenities}
+              guests={guests}
+              setGuests={setGuests}
+              priceRanges={priceRanges}
+            />
+          </aside>
+        </div>
+      )}
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex w-72 p-6 bg-white rounded-2xl flex-col items-start h-fit">
+        <FilterContent
+          roomTypes={roomTypes}
+          selectedTypes={selectedTypes}
+          setSelectedTypes={setSelectedTypes}
+          selectedPrices={selectedPrices}
+          setSelectedPrices={setSelectedPrices}
+          selectedAmenities={selectedAmenities}
+          setSelectedAmenities={setSelectedAmenities}
+          guests={guests}
+          setGuests={setGuests}
+          priceRanges={priceRanges}
+        />
+      </aside>
+    </>
+  );
+};
+
+// Extracted filter content for reuse
+function FilterContent({
+  roomTypes,
+  selectedTypes,
+  setSelectedTypes,
+  selectedPrices,
+  setSelectedPrices,
+  selectedAmenities,
+  setSelectedAmenities,
+  guests,
+  setGuests,
+  priceRanges,
+}) {
+  const toggleItem = (stateSetter, value) => {
+    stateSetter((prev) => {
       const arr = Array.isArray(prev) ? prev : [];
       return arr.includes(value)
         ? arr.filter((item) => item !== value)
@@ -63,7 +156,7 @@ const RoomFilter = ({
   };
 
   return (
-    <aside className="w-72 p-6 bg-white rounded-2xl flex flex-col items-start h-fit">
+    <>
       <h2 className="text-2xl font-extrabold mb-6 text-[#2a1a4a]">
         Filter Rooms
       </h2>
@@ -103,57 +196,21 @@ const RoomFilter = ({
           </label>
         ))}
       </div>
-      {/* Amenities */}
-      <div className="mb-6 w-full">
-        <h3 className="text-lg font-semibold mb-3">Amenities</h3>
-        {amenitiesList.map((item) => (
-          <label key={item} className="block text-sm mb-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="mr-2 accent-[#2a1a4a]"
-              checked={selectedAmenities.includes(item)}
-              onChange={() => toggleItem(setSelectedAmenities, item)}
-            />
-            {item}
-          </label>
-        ))}
-      </div>
-      {/* Number of Guests */}
-      <div className="mb-6 w-full">
-        <h3 className="text-lg font-semibold mb-3">Guests</h3>
-        <select
-          className="w-full p-2 border border-gray-300 rounded-md text-sm"
-          value={guests || ""}
-          onChange={(e) => setGuests(Number(e.target.value))}
-        >
-          <option value="">Select guests</option>
-          {guestOptions.map((num) => (
-            <option key={num} value={num}>
-              {num} Guest{num > 1 && "s"}
-            </option>
-          ))}
-        </select>
-      </div>
       {/* Clear Filters Button */}
       <button
         className="mt-6 w-full py-2 bg-[#2a1a4a] text-white rounded-lg font-semibold hover:bg-[#1d1335] transition disabled:opacity-50 text-sm"
         onClick={() => {
           setSelectedTypes([]);
-          setSelectedPrice(null);
+          setSelectedPrices([]);
           setSelectedAmenities([]);
           setGuests(null);
         }}
-        disabled={
-          selectedTypes.length === 0 &&
-          !selectedPrice &&
-          selectedAmenities.length === 0 &&
-          !guests
-        }
+        disabled={selectedTypes.length === 0 && selectedPrices.length === 0}
       >
         Clear All Filters
       </button>
-    </aside>
+    </>
   );
-};
+}
 
 export default RoomFilter;

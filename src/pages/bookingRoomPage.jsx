@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useEffect ,useState } from "react";
 import AllRoomsType from "../components/RoomCardBooking";
 import RoomFilter from "./layouts/filter";
+import { useNavigate } from "react-router-dom";
 
 const BookingRoom = () => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState([]); // ensure array
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [guests, setGuests] = useState(null);
+  const token = localStorage.getItem("authToken");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/sign-in");
+    }
+  }, [token, navigate]);
+
+  if (!token) {
+    return null;
+  }
 
   return (
     <>

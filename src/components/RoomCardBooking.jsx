@@ -39,13 +39,13 @@ const AllRoomsType = ({ onBook, selectedPrices = [], selectedTypes = [] }) => {
           key={room.id}
           className="rounded-3xl shadow-xl hover:shadow-2xl transition duration-300 overflow-hidden border border-gray-100 bg-white flex flex-col group"
         >
-          <div className="relative">
+          <div>
             <img
               src={room.room_image || "src/assets/categories/category-room.jpg"}
               alt={room.room_type.type}
               className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"
             />
-            <span className="absolute top-4 left-4 bg-gradient-to-r from-[#2a1a4a] to-[#4b2e83] text-white px-4 py-1 rounded-full text-xs font-semibold shadow">
+            <span className="relative top-4 left-4 bg-gradient-to-r from-[#2a1a4a] to-[#4b2e83] text-white px-4 py-1 rounded-full text-xs font-semibold shadow">
               {room.room_type.type}
             </span>
           </div>

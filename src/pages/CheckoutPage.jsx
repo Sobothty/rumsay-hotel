@@ -12,11 +12,9 @@ import {
   ArrowRight,
   CheckCircle,
 } from "lucide-react";
-import { useLocation } from "react-router-dom";
-import PaymentForm from "../components/PaymentForm";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import StripeContainer from "../components/PaymentWrapper";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -217,6 +215,36 @@ export default function HotelCheckoutPage() {
   const [availableRooms, setAvailableRooms] = useState([]);
   const room_ids = location.state?.room_ids || [];
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check authentication
+    if (!localStorage.getItem("authToken")) {
+      navigate("/sign-in");
+      return;
+    }
+    // Check dates
+    if (
+      !localStorage.getItem("checkInDate") ||
+      !localStorage.getItem("checkOutDate")
+    ) {
+      navigate("/check-in-out");
+      return;
+    }
+    // Check cart items
+    const cartData = localStorage.getItem("cartItems");
+    let cartItemsArr = [];
+    try {
+      cartItemsArr = JSON.parse(cartData) || [];
+    } catch {
+      cartItemsArr = [];
+    }
+    if (!cartItemsArr.length) {
+      navigate("/booking");
+      return;
+    }
+  }, [checkInDate, checkOutDate, navigate]);
+
   // Helper functions
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -409,9 +437,9 @@ export default function HotelCheckoutPage() {
   );
 
   // Calculate total price for all rooms in cartItems
- // After calculating totalCartRoomPrice
-const totalCartRoomPrice = getTotalAllRoomPrice(cartItems);
-localStorage.setItem('totalCartRoomPrice', totalCartRoomPrice);
+  // After calculating totalCartRoomPrice
+  const totalCartRoomPrice = getTotalAllRoomPrice(cartItems);
+  localStorage.setItem("totalCartRoomPrice", totalCartRoomPrice);
 
   // Get room ids from cartItems in localStorage as an array
   const cartRoomIds = getCartRoomIds();
