@@ -12,7 +12,7 @@ export default function SocialCallBack() {
     if (email) {
       console.log("User email:", email);
     }
-    fetch(`${import.meta.env.VITE_BASE_URL}api/auth/get-user`, {
+    fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/get-user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
