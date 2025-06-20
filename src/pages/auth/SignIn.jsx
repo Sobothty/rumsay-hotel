@@ -175,11 +175,12 @@ const SignIn = () => {
                   className="flex gap-2 animate-fade-in"
                   style={{ animationDelay: "0.4s" }}
                 >
-                  <button
+ <a href="https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect">
+                   <button
                     type="button"
-                    onClick={handleGoogleLogin}
                     className="flex flex-1 items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
+                    
                     <img
                       src="src/assets/signup/google.png"
                       alt="Google"
@@ -187,6 +188,7 @@ const SignIn = () => {
                     />
                     Google
                   </button>
+ </a>
                 </div>
               </Form>
             )}
