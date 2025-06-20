@@ -1,6 +1,6 @@
 import RoomType from "./layouts/CategoriesRoomType";
-import ExploreALlRoomType from "./layouts/ExploreRoom";
 import Gallery from "../components/Gallery";
+import { useNavigate } from "react-router-dom";
 
 import {
   FaConciergeBell,
@@ -24,7 +24,6 @@ import {
   WineIcon,
   ArrowRightIcon,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const amenities = [
   { icon: <FaConciergeBell />, label: "Concierge" },
@@ -51,6 +50,8 @@ const images = [
 const labels = ["Lobby", "Suite", "Pool", "Restaurant"];
 
 export default function Homepage() {
+  const navigate = useNavigate();
+
   return (
     <>
       <main className="w-full m-auto max-w-7xl ">
@@ -89,12 +90,22 @@ export default function Homepage() {
             <div className="flex gap-4">
               <button
                 className="px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white rounded-full font-medium transition-all hover:shadow-lg"
-                onClick={() => Link("/check-in-out")}
+                onClick={() => navigate("/check-in-out")}
               >
                 Book Now
               </button>
               <button className="px-8 py-3 bg-transparent border-2 border-white/30 hover:border-white/60 text-white rounded-full font-medium transition-all">
-                Explore Suites
+                <a
+                  href="#rooms-types"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document
+                      .getElementById("rooms-types")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  Explore Suites
+                </a>
               </button>
             </div>
           </div>
@@ -168,7 +179,9 @@ export default function Homepage() {
         </section>
 
         {/* categories */}
-        <RoomType />
+        <section id="rooms-types">
+          <RoomType />
+        </section>
 
         {/* Amenities Section */}
         <section className="bg-white py-16 text-[#2a1a4a]">
@@ -185,19 +198,16 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* explore all room type */}
-        <section>
-          <ExploreALlRoomType />
-        </section>
-
         {/* preview */}
-        <section className="bg-white py-16 px-6">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-            <img
-              src="https://img.freepik.com/free-vector/flat-landing-page-template-hotel-accommodation_23-2150311165.jpg" // Change this to your preview image path
-              alt="Hotel Preview"
-              className="w-full h-80 object-cover rounded-2xl shadow-lg"
-            />
+        <section className="bg-white py-16">
+          <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+            <div className="overflow-hidden rounded-2xl shadow-lg group">
+              <img
+                src="https://i0.wp.com/fulgararchitects.com/wp-content/uploads/2019/06/fulgar-architects-top-meta-modern-enhance-hotel-lobby.jpg?fit=1800%2C1013&ssl=1"
+                alt="Hotel Preview"
+                className="w-full h-80 object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
+              />
+            </div>
             <div>
               <h2 className="text-4xl font-bold text-blue-700 mb-4">
                 Discover Luxury & Comfort
@@ -209,7 +219,13 @@ export default function Homepage() {
                 views.
               </p>
               <a
-                href="#rooms"
+                href="#rooms-types"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("rooms-types")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition"
               >
                 Explore Rooms
@@ -218,10 +234,10 @@ export default function Homepage() {
           </div>
         </section>
         {/* Gallery */}
+        <section className="w-full">
+          <Gallery />
+        </section>
       </main>
-      <section className="w-full">
-        <Gallery />
-      </section>
     </>
   );
 }
