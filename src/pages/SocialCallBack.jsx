@@ -6,16 +6,15 @@ export default function SocialCallBack() {
   const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const email = params.get("email");
+    const params = new URLSearchParams(window.location.search).get("email");
 
     if (email) {
-      console.log("User email:", email);
+      console.log("User email:", params);
     }
     fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/get-user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ params }),
     });
   })
     .then((res) => res.json())

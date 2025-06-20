@@ -68,12 +68,9 @@ const SignIn = () => {
   };
 
   const handleGoogleLogin = () => {
-    const frontendRedirect = window.location.origin + "/social/callback";
 
     // Build the full URL to the backend with the frontend URL as a query parameter
-    const backendRedirect = `https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect?frontend_url=${encodeURIComponent(
-      frontendRedirect
-    )}`;
+    const backendRedirect = `https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect`;
 
     // Redirect the browser to the backend
     window.location.href = backendRedirect;
