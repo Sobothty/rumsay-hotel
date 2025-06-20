@@ -1,4 +1,7 @@
+import React from 'react'
 
+export default function SocialCallBack() {
+  
 // on /social/callback route
 const email = new URLSearchParams(window.location.search).get("email");
 
@@ -18,4 +21,7 @@ fetch("https://api-hotel-production-ee3e.up.railway.app/api/auth/get-user", {
       alert("User not found");
     }
   });
-
+  return (
+    <div>SocialCallBack</div>
+  )
+}
