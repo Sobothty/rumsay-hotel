@@ -24,6 +24,7 @@ import {
   WineIcon,
   ArrowRightIcon,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const amenities = [
   { icon: <FaConciergeBell />, label: "Concierge" },
@@ -86,7 +87,10 @@ export default function Homepage() {
 
             {/* CTA Buttons */}
             <div className="flex gap-4">
-              <button className="px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white rounded-full font-medium transition-all hover:shadow-lg">
+              <button
+                className="px-8 py-3 bg-gold-500 hover:bg-gold-600 text-white rounded-full font-medium transition-all hover:shadow-lg"
+                onClick={() => Link("/check-in-out")}
+              >
                 Book Now
               </button>
               <button className="px-8 py-3 bg-transparent border-2 border-white/30 hover:border-white/60 text-white rounded-full font-medium transition-all">
@@ -214,11 +218,10 @@ export default function Homepage() {
           </div>
         </section>
         {/* Gallery */}
-        
       </main>
       <section className="w-full">
-          <Gallery />
-        </section>
+        <Gallery />
+      </section>
     </>
   );
 }
