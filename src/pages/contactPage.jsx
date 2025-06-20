@@ -1,19 +1,29 @@
-import React from 'react'
-import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Car, Utensils, Calendar } from 'lucide-react'
+import React from "react";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Send,
+  MessageSquare,
+  Car,
+  Utensils,
+  Calendar,
+} from "lucide-react";
+
 
 export default function Contact() {
   return (
     <div className="container w-full mx-auto">
       <main className="w-full m-auto max-w-7xl bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
             Contact <span className="text-blue-600">Romsay Hotel</span>
           </h1>
           <p className="mt-3 max-w-2xl mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl">
-            We're here to help make your stay exceptional. Reach out to us for reservations, inquiries, or any
-            assistance you need.
+            We're here to help make your stay exceptional. Reach out to us for
+            reservations, inquiries, or any assistance you need.
           </p>
         </div>
 
@@ -25,7 +35,9 @@ export default function Contact() {
               <Phone className="h-6 w-6" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">Call Us</h3>
-            <p className="text-blue-600 font-semibold text-lg">+1 (555) 123-4567</p>
+            <p className="text-blue-600 font-semibold text-lg">
+              +1 (555) 123-4567
+            </p>
             <p className="text-sm text-gray-500 mt-1">MON-SUN: 6:00AM-8:00PM</p>
           </div>
 
@@ -54,7 +66,9 @@ export default function Contact() {
             <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mx-auto mb-4">
               <Clock className="h-6 w-6" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Front Desk</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              Front Desk
+            </h3>
             <p className="text-gray-600 text-sm">24 Hours</p>
             <p className="text-gray-600 text-sm">Every Day</p>
           </div>
@@ -64,11 +78,16 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Contact Form */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Send us a Message
+            </h2>
             <form className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     First Name
                   </label>
                   <input
@@ -80,7 +99,10 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Last Name
                   </label>
                   <input
@@ -94,7 +116,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <input
@@ -107,7 +132,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Phone Number
                 </label>
                 <input
@@ -120,7 +148,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="subject"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Subject
                 </label>
                 <select
@@ -136,7 +167,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Message
                 </label>
                 <textarea
@@ -162,7 +196,9 @@ export default function Contact() {
           <div className="space-y-8">
             {/* Hotel Details */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Hotel Information</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Hotel Information
+              </h2>
 
               <div className="space-y-6">
                 <div className="flex items-start">
@@ -182,13 +218,15 @@ export default function Contact() {
                 <div className="flex items-start">
                   <Phone className="h-6 w-6 text-blue-500 mt-1 mr-3 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-gray-900">Phone Numbers</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Phone Numbers
+                    </h3>
                     <p className="text-gray-600">
-                      Front Desk: +1 (555) 123-4567
+                      Front Desk: (+855) 123-456-78
                       <br />
-                      Reservations: +1 (555) 123-4568
+                      Reservations: (+855) 23-880-880
                       <br />
-                      Restaurant: +1 (555) 123-4569
+                      Restaurant: (+855) 12-454-234
                     </p>
                   </div>
                 </div>
@@ -196,11 +234,13 @@ export default function Contact() {
                 <div className="flex items-start">
                   <Mail className="h-6 w-6 text-blue-500 mt-1 mr-3 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-gray-900">Email Addresses</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Email Addresses
+                    </h3>
                     <p className="text-gray-600">
-                      General: info@romsay.com
+                      General: info@romsayhotel.com
                       <br />
-                      Reservations: reservations@romsay.com
+                      Reservations: reservations@romsayhotel.com
                       <br />
                       Events: events@romsay.com
                     </p>
@@ -210,7 +250,9 @@ export default function Contact() {
                 <div className="flex items-start">
                   <Clock className="h-6 w-6 text-blue-500 mt-1 mr-3 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-gray-900">Operating Hours</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Operating Hours
+                    </h3>
                     <p className="text-gray-600">
                       Front Desk: 24/7
                       <br />
@@ -227,17 +269,21 @@ export default function Contact() {
 
             {/* Map Placeholder */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Location</h2>
-              <div className="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Our Location
+              </h2>
+              <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
                 <div className="text-center">
-                  <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-500">Interactive Map</p>
-                  <p className="text-sm text-gray-400">123 Luxury Avenue, Downtown NY</p>
+                  <MapPin className="h-12 w-12 text-red-700 mx-auto mb-2" />
+                  <p className="text-gray-500">Rumsay Hotel Map</p>
+                  <p className="text-sm text-gray-400">
+                    Russian Federation Blvd (110), Phnom Penh 120404
+                  </p>
                 </div>
               </div>
               <div className="mt-4 text-center">
                 <a
-                  href="https://maps.google.com"
+                  href="https://maps.app.goo.gl/mMzKiRjiPFTarPhk7"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition-colors"
@@ -252,7 +298,9 @@ export default function Contact() {
 
         {/* Department Contacts */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Department Contacts</h2>
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
+            Department Contacts
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Reservations */}
             <div className="text-center p-6 bg-gray-50 rounded-lg">
@@ -260,7 +308,9 @@ export default function Contact() {
                 <Calendar className="h-6 w-6" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Reservations</h3>
-              <p className="text-sm text-gray-600 mb-2">Book your perfect stay</p>
+              <p className="text-sm text-gray-600 mb-2">
+                Book your perfect stay
+              </p>
               <p className="text-blue-600 font-medium">+1 (555) 123-4568</p>
               <p className="text-sm text-gray-500">reservations@romsay.com</p>
             </div>
@@ -282,7 +332,9 @@ export default function Contact() {
                 <MessageSquare className="h-6 w-6" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Spa</h3>
-              <p className="text-sm text-gray-600 mb-2">Contact for more activity</p>
+              <p className="text-sm text-gray-600 mb-2">
+                Contact for more activity
+              </p>
               <p className="text-blue-600 font-medium">+1 (555) 123-4570</p>
               <p className="text-sm text-gray-500">spa@romsay.com</p>
             </div>
@@ -292,7 +344,9 @@ export default function Contact() {
               <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mx-auto mb-4">
                 <Car className="h-6 w-6" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Valet Service</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                Valet Service
+              </h3>
               <p className="text-sm text-gray-600 mb-2">Parking assistance</p>
               <p className="text-blue-600 font-medium">+1 (555) 123-4571</p>
               <p className="text-sm text-gray-500">Available 24/7</p>
@@ -302,39 +356,51 @@ export default function Contact() {
 
         {/* FAQ Section */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
+            Frequently Asked Questions
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">What are your check-in/check-out times?</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                What are your check-in/check-out times?
+              </h3>
               <p className="text-gray-600 mb-4">
-                Check-in: 3:00 PM | Check-out: 11:00 AM. Early check-in and late check-out may be available upon
-                request.
+                Check-in: 3:00 PM | Check-out: 11:00 AM. Early check-in and late
+                check-out may be available upon request.
               </p>
 
-              <h3 className="font-semibold text-gray-900 mb-2">Is parking available?</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                Is parking available?
+              </h3>
               <p className="text-gray-600 mb-4">
-                We offer complimentary valet parking for all hotel guests with 24/7 security.
+                We offer complimentary valet parking for all hotel guests with
+                24/7 security.
               </p>
 
-              <h3 className="font-semibold text-gray-900 mb-2">Do you allow pets?</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                Do you allow pets?
+              </h3>
               <p className="text-gray-600 mb-4">
-                Yes, we are a pet-friendly hotel. Additional fees may apply. Please inform us when making your
-                reservation.
+                Yes, we are a pet-friendly hotel. Additional fees may apply.
+                Please inform us when making your reservation.
               </p>
             </div>
 
             <div>
-
-              <h3 className="font-semibold text-gray-900 mb-2">What amenities are included?</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                What amenities are included?
+              </h3>
               <p className="text-gray-600 mb-4">
-                All rooms include free Wi-Fi, fitness center access, and concierge services. Premium rooms include spa
-                access.
+                All rooms include free Wi-Fi, fitness center access, and
+                concierge services. Premium rooms include spa access.
               </p>
 
-              <h3 className="font-semibold text-gray-900 mb-2">Can I cancel my reservation?</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                Can I cancel my reservation?
+              </h3>
               <p className="text-gray-600">
-                Cancellations are accepted up to 24 hours before arrival. Please check your booking confirmation for
-                specific terms.
+                Cancellations are accepted up to 24 hours before arrival. Please
+                check your booking confirmation for specific terms.
               </p>
             </div>
           </div>
@@ -342,16 +408,22 @@ export default function Contact() {
 
         {/* Emergency Contact */}
         <div className="bg-red-50 border border-red-200 rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-red-800 mb-4">Emergency Contact</h2>
-          <p className="text-red-700 mb-4">For urgent matters or emergencies during your stay</p>
+          <h2 className="text-2xl font-bold text-red-800 mb-4">
+            Emergency Contact
+          </h2>
+          <p className="text-red-700 mb-4">
+            For urgent matters or emergencies during your stay
+          </p>
           <div className="flex items-center justify-center space-x-8">
             <div>
               <p className="font-semibold text-red-800">24/7 Emergency Line</p>
-              <p className="text-2xl font-bold text-red-600">+1 (555) 911-HELP</p>
+              <p className="text-2xl font-bold text-red-600">
+                +1 (555) 911-HELP
+              </p>
             </div>
           </div>
         </div>
       </main>
     </div>
-  )
+  );
 }
