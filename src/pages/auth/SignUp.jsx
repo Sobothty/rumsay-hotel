@@ -4,6 +4,9 @@ import * as Yup from "yup";
 import { useState } from "react";
 import axios from "axios";
 
+import Google from "../../assets/signup/google.png";
+import Github from "../../assets/signup/github.png";
+
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -263,28 +266,30 @@ const SignUp = () => {
                   className="flex gap-2 animate-fade-in"
                   style={{ animationDelay: "0.4s" }}
                 >
-                  <button
-                    type="button"
-                    className="flex-1 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
+                  <a
+                    href="https://api-hotel-production-ee3e.up.railway.app/api/auth/google/redirect"
+                    className="flex flex-1 items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
-                    <img
-                      src="src/assets/signup/google.png"
-                      alt="Google"
-                      className="h-5 mr-2"
-                    />
-                    Google
-                  </button>
-                  <button
-                    type="button"
-                    className="flex-1 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-full"
+                    >
+                      <img src={Google} alt="Google" className="h-5 mr-2" />
+                      Google
+                    </button>
+                  </a>
+                  <a
+                    href="https://api-hotel-production-ee3e.up.railway.app/api/auth/github/redirect"
+                    className="flex flex-1 items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
-                    <img
-                      src="src/assets/signup/facebook.png"
-                      alt="Facebook"
-                      className="h-5 mr-2"
-                    />
-                    Facebook
-                  </button>
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-full"
+                    >
+                      <img src={Github} alt="Google" className="h-5 mr-2" />
+                      GitHub
+                    </button>
+                  </a>
                 </div>
               </Form>
             )}

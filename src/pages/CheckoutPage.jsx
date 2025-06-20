@@ -427,7 +427,7 @@ export default function HotelCheckoutPage() {
     );
   };
 
-  const total_payment = roomsTotal;
+
   const amount = Math.round(roomsTotal * 100);
 
   // Calculate total price for all available rooms

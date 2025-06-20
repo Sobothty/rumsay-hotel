@@ -19,6 +19,13 @@ const ProfileDashboard = () => {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
+  const [ratingDialog, setRatingDialog] = useState({
+    open: false,
+    bookingId: null,
+  });
+  const [ratingValue, setRatingValue] = useState(5);
+  const [ratingComment, setRatingComment] = useState("");
+  const [ratingLoading, setRatingLoading] = useState(false);
 
   useEffect(() => {
     fetchUserData();
@@ -91,11 +98,11 @@ const ProfileDashboard = () => {
     try {
       const token = localStorage.getItem("authToken");
       // remove avatar (ignore profile image field)
-      const { avatar, ...formDataWithoutAvatar } = form; 
+      const { avatar, ...formDataWithoutAvatar } = form;
       const response = await fetch(
         `${import.meta.env.VITE_BASE_URL}/api/profile`,
         {
-          method: "POST", 
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -103,7 +110,7 @@ const ProfileDashboard = () => {
           body: JSON.stringify(formDataWithoutAvatar),
         }
       );
-  
+
       const json = await response.json();
       console.log("API response:", json); // Add debug info
       if (response.ok && json.result && json.data) {
@@ -119,7 +126,6 @@ const ProfileDashboard = () => {
     }
     setSaving(false);
   };
-  
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -288,10 +294,24 @@ const ProfileDashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right flex flex-col items-end gap-2">
                       <div className="text-2xl font-bold text-blue-600">
                         ${booking.payment.total_payment}
                       </div>
+                      {/* Show Rating button only if booking is NOT completed */}
+                      {booking.booking_status !== "completed" && (
+                        <button
+                          className="mt-2 px-4 py-2 bg-yellow-400 text-white rounded-lg font-semibold hover:bg-yellow-500 transition"
+                          onClick={() => {
+                            setRatingDialog({
+                              open: true,
+                              bookingId: booking.id,
+                            });
+                          }}
+                        >
+                          Rating
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -370,6 +390,116 @@ const ProfileDashboard = () => {
                 Cancel
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rating Dialog */}
+      {ratingDialog?.open && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Rate Your Stay
+            </h3>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setRatingLoading(true);
+                try {
+                  const token = localStorage.getItem("authToken");
+                  const completeBooking = await fetch(
+                    `${import.meta.env.VITE_BASE_URL}/api/bookings/${
+                      ratingDialog.bookingId
+                    }/complete`,
+                    {
+                      method: "PUT",
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  );
+                  const response = await fetch(
+                    `${import.meta.env.VITE_BASE_URL}/api/ratings`,
+                    {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        booking_id: ratingDialog.bookingId,
+                        rating: ratingValue,
+                        comment: ratingComment,
+                      }),
+                    }
+                  );
+                  const json = await response.json();
+                  if (response.ok && json.result) {
+                    alert("Thank you for your rating!");
+                    setRatingDialog({ open: false, bookingId: null });
+                    setRatingValue(5);
+                    setRatingComment("");
+                  } else {
+                    alert(json.message || "Failed to submit rating.");
+                  }
+                } catch (err) {
+                  alert("Failed to submit rating.");
+                }
+                setRatingLoading(false);
+              }}
+            >
+              <div className="mb-4 flex items-center justify-center gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    type="button"
+                    key={star}
+                    onClick={() => setRatingValue(star)}
+                    className="focus:outline-none"
+                  >
+                    <svg
+                      className={`w-8 h-8 ${
+                        ratingValue >= star
+                          ? "text-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.38-2.455a1 1 0 00-1.175 0l-3.38 2.455c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
+                    </svg>
+                  </button>
+                ))}
+              </div>
+              <div className="mb-4">
+                <textarea
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                  rows={3}
+                  placeholder="Leave a comment..."
+                  value={ratingComment}
+                  onChange={(e) => setRatingComment(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  disabled={ratingLoading}
+                  className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white py-3 px-4 rounded-xl font-semibold shadow-md flex items-center justify-center gap-2"
+                >
+                  {ratingLoading ? "Submitting..." : "Submit"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setRatingDialog({ open: false, bookingId: null })
+                  }
+                  className="flex-1 bg-gray-100 text-gray-700 py-3 px-4 rounded-xl font-semibold hover:bg-gray-200"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
