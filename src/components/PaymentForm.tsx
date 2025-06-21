@@ -4,7 +4,6 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 const getTotalCartRoomPriceFromLocalStorage = () => {
   const value = localStorage.getItem("totalCartRoomPrice");
   console.log("Total cart room price from localStorage:", value);
@@ -128,7 +127,6 @@ const CheckoutForm = () => {
           );
 
           console.log("Booking API response:", booking.data);
-          
         } catch (bookingError: any) {
           console.error("Booking API error:", bookingError);
           alert(
@@ -136,6 +134,12 @@ const CheckoutForm = () => {
               (bookingError.response?.data?.message || bookingError.message)
           );
         }
+        localStorage.removeItem("checkIndate");
+        localStorage.removeItem("checkOutdate");
+        localStorage.removeItem("roomIds");
+        localStorage.removeItem("amount");
+        localStorage.removeItem("cartItems");
+        navigate("/");
       } else {
         console.error("Payment failed:", response.data);
       }
@@ -153,7 +157,7 @@ const CheckoutForm = () => {
     localStorage.removeItem("amount");
     localStorage.removeItem("cartItems");
 
-    navigate("/payment-success")
+    navigate("/payment-success");
   };
 
   return (

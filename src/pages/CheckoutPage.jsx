@@ -191,7 +191,6 @@ const getCartRoomIds = () => {
 };
 
 export default function HotelCheckoutPage() {
-  // State declarations first to avoid reference errors
   const [checkInDate, setCheckInDate] = useState(
     () => localStorage.getItem("checkInDate") || ""
   );
@@ -427,7 +426,6 @@ export default function HotelCheckoutPage() {
     );
   };
 
-
   const amount = Math.round(roomsTotal * 100);
 
   // Calculate total price for all available rooms
@@ -545,10 +543,9 @@ export default function HotelCheckoutPage() {
                     {/* Check in data */}
                     <div className="relative">
                       <input
-                        type="date"
-                        value={checkInDate}
-                        min={getTodayDate()}
-                        onChange={(e) => setCheckInDate(e.target.value)}
+                        type="text"
+                        value={localStorage.getItem("checkInDate") || ""}
+                        readOnly
                         className="w-full rounded-md bg-blue-10/50 border-blue-100 px-3 py-2 text-sm shadow-sm ring-1 ring-gray-200 ring-offset-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                       />
                     </div>
@@ -565,62 +562,12 @@ export default function HotelCheckoutPage() {
                     <div className="relative">
                       <input
                         type="date"
-                        value={checkOutDate}
-                        min={checkInDate || getTomorrowDate()}
-                        onChange={(e) => setCheckOutDate(e.target.value)}
+                        value={localStorage.getItem("checkOutDate") || ""}
+                        readOnly
                         className="w-full rounded-md bg-blue-10/50 border-blue-100 px-3 py-2 text-sm shadow-sm ring-1 ring-gray-200 ring-offset-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                       />
                     </div>
                   </div>
-                </div>
-
-                <div>
-                  <Label className="text-blue-800">Duration</Label>
-                  {checkInDate && checkOutDate && (
-                    <div className="mt-4 text-center">
-                      <div className="inline-flex items-center justify-center space-x-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl px-8 py-5 border border-blue-200 shadow-md">
-                        <div className="flex flex-col items-center">
-                          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mb-1">
-                            {checkInFormatted.day}
-                          </div>
-                          <span className="text-blue-800 font-medium">
-                            {checkInFormatted.month}
-                          </span>
-                          <span className="text-xs text-blue-600">
-                            {checkInFormatted.weekday}
-                          </span>
-                        </div>
-
-                        <div className="flex flex-col items-center">
-                          <div className="flex items-center">
-                            <div className="h-0.5 w-12 bg-blue-400"></div>
-                            <ArrowRight
-                              className="text-blue-600 mx-1"
-                              size={20}
-                            />
-                            <div className="h-0.5 w-12 bg-blue-400"></div>
-                          </div>
-                          <div className="mt-1 px-4 py-1 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full shadow-md">
-                            <span className="text-white font-bold text-sm tracking-wide">
-                              {getNights()} night{getNights() !== 1 ? "s" : ""}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col items-center">
-                          <div className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold mb-1">
-                            {checkOutFormatted.day}
-                          </div>
-                          <span className="text-blue-800 font-medium">
-                            {checkOutFormatted.month}
-                          </span>
-                          <span className="text-xs text-blue-600">
-                            {checkOutFormatted.weekday}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>
