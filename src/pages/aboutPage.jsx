@@ -10,6 +10,8 @@ import {
   Waves,
   Star,
 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+// import { Star } from "lucide-react";
 
 import KoukLin from "../assets/member/kouk-lin.png";
 import Dara from "../assets/member/dara.png";
@@ -18,6 +20,37 @@ import Seth from "../assets/member/seth.png";
 import Bothty from "../assets/member/bothty.png";
 
 export default function About() {
+  const [rating, setRating] = useState([]);
+
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/ratings`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch rating");
+        }
+        const data = await res.json();
+        console.log("Data", data);
+        setRating(data?.data || []);
+      } catch (error) {
+        toast.error("Error fetching rating:", error);
+      }
+    };
+    fetchRating();
+  }, []);
+
+
+
+
   return (
     <div className="container w-full mx-auto text-center">
       <main className="w-full m-auto max-w-7xl py-12 px-4 sm:px-6 bg-gray-50 lg:px-8">
@@ -473,6 +506,111 @@ export default function About() {
             </div>
           </div>
         </div>
+
+        {/* --- Guest Ratings Section --- */}
+        <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Header */}
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <Star className="w-4 h-4 fill-current" />
+                Guest Reviews
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">What Our Guests Say</h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Real experiences from real people who've stayed with us
+              </p>
+            </div>
+
+            {/* Ratings Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {rating.length === 0 ? (
+                <div className="col-span-2 text-center py-16">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Star className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <p className="text-gray-500 text-lg">No reviews yet. Be the first to share your experience!</p>
+                </div>
+              ) : (
+                rating.map((item) => (
+                  <div
+                    key={item.id}
+                    className="group hover:shadow-2xl transition-all duration-300 border-0 shadow-lg hover:-translate-y-2 bg-white/90 backdrop-blur-sm rounded-2xl p-8 relative overflow-hidden"
+                  >
+                    {/* Decorative gradient top border */}
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+
+                    {/* Quote decoration */}
+                    <div className="absolute top-4 right-6 opacity-10">
+                      <svg className="w-12 h-12 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                      </svg>
+                    </div>
+
+                    {/* Rating Stars */}
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-5 h-5 transition-colors ${
+                              i < item.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-200 fill-gray-200"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+                        {item.rating}.0
+                      </span>
+                    </div>
+
+                    {/* Comment */}
+                    <blockquote className="text-gray-700 text-lg leading-relaxed mb-6 font-medium relative z-10">
+                      "{item.comment}"
+                    </blockquote>
+
+                    {/* User Info */}
+                    <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+                      <div>
+                        <p className="font-bold text-gray-900 text-lg">{item.user?.name || "Anonymous"}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500 font-medium">
+                          {new Date(item.created_at).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Subtle background pattern */}
+                    <div className="absolute bottom-0 right-0 w-32 h-32 opacity-5">
+                      <div className="w-full h-full bg-gradient-to-tl from-blue-500 to-transparent rounded-full"></div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Average Rating Summary */}
+            {rating.length > 0 && (
+              <div className="text-center mt-16">
+                <div className="inline-flex items-center gap-4 text-gray-600 bg-white px-8 py-4 rounded-full shadow-xl border border-gray-100 backdrop-blur-sm">
+                  <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+                  <span className="font-bold text-lg text-gray-800">
+                    Average rating: {(rating.reduce((acc, r) => acc + r.rating, 0) / rating.length).toFixed(1)} out of 5
+                  </span>
+                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-500 font-medium">
+                    {rating.length} review{rating.length !== 1 ? "s" : ""}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
 
         {/* Contact & Booking Section */}
         <div id="contact" className="bg-blue-700 rounded-2xl shadow-lg">
