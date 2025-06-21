@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const AllRoomsType = ({ onBook, selectedPrices = [], selectedTypes = [] }) => {
+const AllRoomsType = ({
+  onBook,
+  selectedPrices = [],
+  selectedTypes = [],
+  searchRoomNumber = "",
+}) => {
   const [roomTypes, setRoomTypes] = useState([]);
 
   useEffect(() => {
     const fetchRoomTypes = async () => {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_BASE_URL}/api/rooms`
-        );
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/rooms`);
         const result = await res.json();
         setRoomTypes(result.data || []);
       } catch (err) {
@@ -19,17 +22,28 @@ const AllRoomsType = ({ onBook, selectedPrices = [], selectedTypes = [] }) => {
     fetchRoomTypes();
   }, []);
 
-  // Filter by selectedPrices and selectedTypes
+  // Filter by selectedPrices, selectedTypes, and searchRoomNumber
   const filteredRooms = roomTypes
     .filter((room) =>
       selectedPrices.length === 0
         ? true
         : selectedPrices.some(
-            (range) => room.room_type.price >= range.min && room.room_type.price <= range.max
+            (range) =>
+              room.room_type.price >= range.min &&
+              room.room_type.price <= range.max
           )
     )
     .filter((room) =>
-      selectedTypes.length === 0 ? true : selectedTypes.includes(room.room_type.type)
+      selectedTypes.length === 0
+        ? true
+        : selectedTypes.includes(room.room_type.type)
+    )
+    .filter((room) =>
+      searchRoomNumber.trim() === ""
+        ? true
+        : room.room_number
+            .toLowerCase()
+            .includes(searchRoomNumber.trim().toLowerCase())
     );
 
   return (
