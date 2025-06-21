@@ -43,11 +43,6 @@ const sidebarItems = [
     icons: <Users className="w-5 h-5" />,
     href: "/admin/users",
   },
-  {
-    name: "Invoices",
-    icons: <ReceiptText className="w-5 h-5" />,
-    href: "/admin/invoices",
-  },
 ];
 
 export default function AdminDashboard() {
