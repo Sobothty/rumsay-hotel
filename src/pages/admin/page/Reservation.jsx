@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 export const Reservation = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filterDate, setFilterDate] = useState("");
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -137,9 +138,7 @@ export const Reservation = () => {
     }
     try {
       await axios.delete(
-        `${
-          import.meta.env.VITE_BASE_URL
-        }/api/bookings/${bookingId}/cancel`,
+        `${import.meta.env.VITE_BASE_URL}/api/bookings/${bookingId}/cancel`,
         {
           headers: {
             Accept: "application/json",
@@ -158,20 +157,44 @@ export const Reservation = () => {
     }
   };
 
+  // Filter bookings by selected date (compare only date part)
+  const filteredBookings = filterDate
+    ? bookings.filter(
+        (b) => b.created_at && b.created_at.slice(0, 10) === filterDate
+      )
+    : bookings;
+
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Booking List</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold">Booking List</h2>
+        <div className="flex items-center gap-2">
+          <label
+            htmlFor="date-filter"
+            className="text-gray-600 font-medium mr-2"
+          >
+            Filter by date:
+          </label>
+          <input
+            id="date-filter"
+            type="date"
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
+            className="transition-all duration-200 border border-blue-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-900 shadow-sm hover:border-blue-500 placeholder-gray-400"
+          />
+          {filterDate && (
+            <button
+              onClick={() => setFilterDate("")}
+              className="ml-2 px-2 py-1 rounded bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs font-semibold transition border border-blue-200 shadow-sm"
+              title="Clear filter"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+      </div>
       {/* Status summary blocks */}
       <div className="flex flex-wrap gap-4 mb-8">
-        <div className="flex-1 min-w-[160px] bg-yellow-100 border-l-4 border-yellow-400 rounded-xl p-4 flex items-center gap-3 shadow">
-          <span className="inline-block w-3 h-3 rounded-full bg-yellow-400"></span>
-          <div>
-            <div className="text-lg font-bold text-yellow-800">
-              {bookings.filter((b) => b.booking_status === "pending").length}
-            </div>
-            <div className="text-sm text-yellow-700">Pending</div>
-          </div>
-        </div>
         <div className="flex-1 min-w-[160px] bg-green-100 border-l-4 border-green-400 rounded-xl p-4 flex items-center gap-3 shadow">
           <span className="inline-block w-3 h-3 rounded-full bg-green-400"></span>
           <div>
@@ -188,6 +211,15 @@ export const Reservation = () => {
               {bookings.filter((b) => b.booking_status === "cancelled").length}
             </div>
             <div className="text-sm text-red-700">Cancelled</div>
+          </div>
+        </div>
+        <div className="flex-1 min-w-[160px] bg-blue-300 border-l-4 border-blue-900 rounded-xl p-4 flex items-center gap-3 shadow">
+          <span className="inline-block w-3 h-3 rounded-full bg-blue-900"></span>
+          <div>
+            <div className="text-lg font-bold text-blue-900">
+              {bookings.filter((b) => b.booking_status === "completed").length}
+            </div>
+            <div className="text-sm text-blue-900">completed</div>
           </div>
         </div>
       </div>
@@ -271,14 +303,14 @@ export const Reservation = () => {
               </tr>
             </thead>
             <tbody>
-              {bookings.length === 0 && (
+              {filteredBookings.length === 0 && (
                 <tr>
                   <td colSpan={5} className="py-4 text-center text-gray-500">
                     No bookings found.
                   </td>
                 </tr>
               )}
-              {bookings.map((booking) => (
+              {filteredBookings.map((booking) => (
                 <tr
                   key={booking.id}
                   className="border-t border-gray-100 dark:border-gray-800 hover:bg-blue-50 dark:hover:bg-gray-800 transition"
@@ -295,13 +327,15 @@ export const Reservation = () => {
                   <td className="py-3 px-4">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold
-                      ${
-                        booking.booking_status === "pending"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : booking.booking_status === "confirmed"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-500 text-white"
-                      }`}
+      ${
+        booking.booking_status === "pending"
+          ? "bg-yellow-100 text-yellow-800"
+          : booking.booking_status === "confirmed"
+          ? "bg-green-100 text-green-800"
+          : booking.booking_status === "completed"
+          ? "bg-blue-900 text-white"
+          : "bg-red-500 text-white"
+      }`}
                     >
                       {booking.booking_status}
                     </span>
@@ -316,26 +350,16 @@ export const Reservation = () => {
                         Confirm
                       </button>
                     )}
-                    {/* Show Checkout button only if confirmed */}
-                    {booking.booking_status === "confirmed" && (
-                      <button
-                        onClick={() =>
-                          handleCheckout(
-                            booking.id,
-                            booking.rooms ? booking.rooms.map((r) => r.id) : []
-                          )
-                        }
-                        className="px-4 py-1 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition"
-                      >
-                        Checkout
-                      </button>
-                    )}
-                    <button
-                      onClick={() => handleDelete(booking.id)}
-                      className="px-4 py-1 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition"
-                    >
-                      Cancel
-                    </button>
+                    {/* Only show Cancel button for all except cancelled and completed */}
+                    {booking.booking_status !== "cancelled" &&
+                      booking.booking_status !== "completed" && (
+                        <button
+                          onClick={() => handleDelete(booking.id)}
+                          className="px-4 py-1 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+                        >
+                          Cancel
+                        </button>
+                      )}
                   </td>
                 </tr>
               ))}

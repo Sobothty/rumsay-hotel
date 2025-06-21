@@ -24,6 +24,8 @@ import {
   WineIcon,
   ArrowRightIcon,
 } from "lucide-react";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 const amenities = [
   { icon: <FaConciergeBell />, label: "Concierge" },
@@ -50,6 +52,7 @@ const images = [
 const labels = ["Lobby", "Suite", "Pool", "Restaurant"];
 
 export default function Homepage() {
+
   const navigate = useNavigate();
 
   return (

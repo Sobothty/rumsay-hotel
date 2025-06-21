@@ -158,7 +158,7 @@ export default function AdminDashboard() {
             theme === "dark" ? "dark:text-gray-100" : "text-gray-800"
           }`}
         >
-          <img src="/Rumsay-nobg.png" alt="Logo" className="h-20 w-auto" />
+          <img src="/Rumsay-nobg.png" alt="Logo" className="h-20 w-auto" onClick={() => navigate("/")}/>
         </div>
         {/* Sidebar Navigation */}
         <nav className="flex-1 px-7 py-6">

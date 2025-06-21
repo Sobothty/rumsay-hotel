@@ -18,6 +18,8 @@ const AllRoom = () => {
     is_active: true,
   });
   const [error, setError] = useState("");
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [roomToDelete, setRoomToDelete] = useState(null);
 
   // Fetch all room types and rooms from API
   useEffect(() => {
@@ -117,6 +119,7 @@ const AllRoom = () => {
           room_number: form.room_number,
           room_type_id: form.room_type_id,
           desc: form.desc,
+          is_active: form.is_active,
         };
         await fetch(
           `${import.meta.env.VITE_BASE_URL}/api/admin/rooms/${editRoom.id}`,
@@ -165,7 +168,6 @@ const AllRoom = () => {
 
   // Handle delete room
   const handleDelete = async (roomId) => {
-    if (!window.confirm("Are you sure you want to delete this room?")) return;
     try {
       await axios.delete(
         `${import.meta.env.VITE_BASE_URL}/api/admin/rooms/${roomId}`,
@@ -322,7 +324,10 @@ const AllRoom = () => {
                           </button>
                           <button
                             className="p-2 rounded hover:bg-red-100 dark:hover:bg-red-900"
-                            onClick={() => handleDelete(room.id)}
+                            onClick={() => {
+                              setRoomToDelete(room);
+                              setShowDeleteDialog(true);
+                            }}
                             title="Delete"
                           >
                             <Trash2 size={18} className="text-red-600" />
@@ -433,6 +438,49 @@ const AllRoom = () => {
                     </div>
                   )}
                 </form>
+              </div>
+            </div>
+          )}
+          {showDeleteDialog && roomToDelete && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+              <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl p-8 w-full max-w-sm relative animate-fade-in">
+                <button
+                  className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-2xl"
+                  onClick={() => setShowDeleteDialog(false)}
+                  aria-label="Close"
+                >
+                  ×
+                </button>
+                <div className="flex flex-col items-center gap-4">
+                  <div className="bg-red-100 rounded-full p-3 mb-2">
+                    <Trash2 size={32} className="text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-bold text-red-600 text-center">
+                    Delete Room {roomToDelete.room_number}?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-center mb-4">
+                    Are you sure you want to delete this room? This action
+                    cannot be undone.
+                  </p>
+                  <div className="flex gap-3 w-full">
+                    <button
+                      className="flex-1 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+                      onClick={() => setShowDeleteDialog(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="flex-1 py-2 rounded-lg bg-red-600 text-white font-bold hover:bg-red-700 transition"
+                      onClick={async () => {
+                        await handleDelete(roomToDelete.id);
+                        setShowDeleteDialog(false);
+                        setRoomToDelete(null);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           )}

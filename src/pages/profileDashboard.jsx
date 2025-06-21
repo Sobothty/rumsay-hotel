@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import {
   User,
   Edit3,
@@ -176,6 +176,7 @@ const ProfileDashboard = () => {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen max-w-7xl m-auto bg-white/90 to-indigo-100">
