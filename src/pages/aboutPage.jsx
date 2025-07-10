@@ -25,31 +25,36 @@ export default function About() {
     {
       name: "James Richardson",
       position: "General Manager",
-      description: "With 20+ years in luxury hospitality, James ensures every guest receives world-class service.",
-      image: "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      description:
+        "With 20+ years in luxury hospitality, James ensures every guest receives world-class service.",
+      image:
+        "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       name: "Maria Santos",
       position: "Executive Chef",
       description:
         "Award-winning chef creating culinary masterpieces that blend international flavors with local ingredients.",
-      image: "https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      image:
+        "https://plus.unsplash.com/premium_photo-1689568126014-06fea9d5d341?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       name: "David Park",
       position: "Guest Relations Manager",
-      description: "Dedicated to creating memorable experiences and ensuring every guest feels welcomed and valued.",
-      image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      description:
+        "Dedicated to creating memorable experiences and ensuring every guest feels welcomed and valued.",
+      image:
+        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       name: "Sarah Williams",
       position: "Operations Manager",
       description:
         "Ensures seamless daily operations and maintains the highest standards of service across all departments.",
-      image: "https://images.unsplash.com/photo-1651684215020-f7a5b6610f23?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      image:
+        "https://images.unsplash.com/photo-1651684215020-f7a5b6610f23?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
-  ]
-
+  ];
 
   useEffect(() => {
     const fetchRating = async () => {
@@ -76,9 +81,6 @@ export default function About() {
     };
     fetchRating();
   }, []);
-
-
-
 
   return (
     <div className="container w-full mx-auto text-center">
@@ -299,44 +301,56 @@ export default function About() {
 
         {/* Management Team */}
         {/* Management Team */}
-      <div className="bg-white py-12 rounded-2xl shadow-lg mb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Leadership Team</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Meet our hospitality experts
-            </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-              Experienced professionals dedicated to making your stay exceptional.
-            </p>
-          </div>
+        <div className="bg-white py-12 rounded-2xl shadow-lg mb-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="lg:text-center">
+              <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">
+                Leadership Team
+              </h2>
+              <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                Meet our hospitality experts
+              </p>
+              <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                Experienced professionals dedicated to making your stay
+                exceptional.
+              </p>
+            </div>
 
-          <div className="mt-10">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {hospitalityExperts.map((expert, index) => (
-                <div key={index} className="pt-6">
-                  <div className="flow-root bg-gray-50 rounded-lg px-6 pb-8">
-                    <div className="-mt-6">
-                      <div>
-                        <span className="inline-flex items-center justify-center p-3 bg-blue-200 rounded-md shadow-lg">
-                          <img
-                            className="h-16 w-16 rounded-full bg-white object-cover"
-                            src={expert.image || "https://via.placeholder.com/64x64"}
-                            alt={expert.name}
-                          />
-                        </span>
+            <div className="mt-10">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                {hospitalityExperts.map((expert, index) => (
+                  <div key={index} className="pt-6">
+                    <div className="flow-root bg-gray-50 rounded-lg px-6 pb-8">
+                      <div className="-mt-6">
+                        <div>
+                          <span className="inline-flex items-center justify-center p-3 bg-blue-200 rounded-md shadow-lg">
+                            <img
+                              className="h-16 w-16 rounded-full bg-white object-cover"
+                              src={
+                                expert.image ||
+                                "https://via.placeholder.com/64x64"
+                              }
+                              alt={expert.name}
+                            />
+                          </span>
+                        </div>
+                        <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">
+                          {expert.name}
+                        </h3>
+                        <p className="mt-2 text-base text-gray-500">
+                          {expert.position}
+                        </p>
+                        <p className="mt-5 text-base text-gray-500">
+                          {expert.description}
+                        </p>
                       </div>
-                      <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">{expert.name}</h3>
-                      <p className="mt-2 text-base text-gray-500">{expert.position}</p>
-                      <p className="mt-5 text-base text-gray-500">{expert.description}</p>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
         {/* Awards & Recognition */}
         <div className="bg-white p-8 rounded-2xl shadow-lg mb-16">
@@ -456,7 +470,9 @@ export default function About() {
                 <Star className="w-4 h-4 fill-current" />
                 Guest Reviews
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">What Our Guests Say</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                What Our Guests Say
+              </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Real experiences from real people who've stayed with us
               </p>
@@ -469,7 +485,9 @@ export default function About() {
                   <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Star className="w-8 h-8 text-gray-400" />
                   </div>
-                  <p className="text-gray-500 text-lg">No reviews yet. Be the first to share your experience!</p>
+                  <p className="text-gray-500 text-lg">
+                    No reviews yet. Be the first to share your experience!
+                  </p>
                 </div>
               ) : (
                 rating.map((item) => (
@@ -482,7 +500,11 @@ export default function About() {
 
                     {/* Quote decoration */}
                     <div className="absolute top-4 right-6 opacity-10">
-                      <svg className="w-12 h-12 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className="w-12 h-12 text-blue-500"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                       </svg>
                     </div>
@@ -494,7 +516,9 @@ export default function About() {
                           <Star
                             key={i}
                             className={`w-5 h-5 transition-colors ${
-                              i < item.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-200 fill-gray-200"
+                              i < item.rating
+                                ? "text-yellow-400 fill-yellow-400"
+                                : "text-gray-200 fill-gray-200"
                             }`}
                           />
                         ))}
@@ -512,15 +536,20 @@ export default function About() {
                     {/* User Info */}
                     <div className="flex items-center justify-between pt-6 border-t border-gray-100">
                       <div>
-                        <p className="font-bold text-gray-900 text-lg">{item.user?.name || "Anonymous"}</p>
+                        <p className="font-bold text-gray-900 text-lg">
+                          {item.user?.name || "Anonymous"}
+                        </p>
                       </div>
                       <div className="text-right">
                         <p className="text-sm text-gray-500 font-medium">
-                          {new Date(item.created_at).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
+                          {new Date(item.created_at).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            }
+                          )}
                         </p>
                       </div>
                     </div>
@@ -540,7 +569,12 @@ export default function About() {
                 <div className="inline-flex items-center gap-4 text-gray-600 bg-white px-8 py-4 rounded-full shadow-xl border border-gray-100 backdrop-blur-sm">
                   <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
                   <span className="font-bold text-lg text-gray-800">
-                    Average rating: {(rating.reduce((acc, r) => acc + r.rating, 0) / rating.length).toFixed(1)} out of 5
+                    Average rating:{" "}
+                    {(
+                      rating.reduce((acc, r) => acc + r.rating, 0) /
+                      rating.length
+                    ).toFixed(1)}{" "}
+                    out of 5
                   </span>
                   <span className="text-gray-400">•</span>
                   <span className="text-gray-500 font-medium">
@@ -566,29 +600,6 @@ export default function About() {
 
         {/* Mentor and member team */}
         <section className="my-16">
-          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 mb-8 text-center">
-            Meet Our Menter
-          </h2>
-          {/* Mentor Card */}
-          <div className="w-full flex flex-col items-center mb-12">
-            <div className="bg-white rounded-2xl shadow-lg flex flex-col md:flex-row items-center w-full max-w-3xl mx-auto p-8">
-              <img
-                src="https://media.licdn.com/dms/image/v2/C4D03AQFuXFCZyhZ7vg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1531034054025?e=2147483647&v=beta&t=lHBoqLa0drjtaZD3Yif1_doxO3nKON0PZb3Cvbbz9Lw"
-                alt="Mentor"
-                className="h-32 w-32 rounded-full object-cover mb-4 md:mb-0 md:mr-8"
-              />
-              <div className="text-center md:text-left">
-                <h3 className="text-2xl font-bold text-gray-900">
-                  Mr. Touch NgounChhay
-                </h3>
-                <p className="text-base text-gray-500 mt-2">Project Mentor</p>
-                <p className="text-gray-500 mt-4">
-                  Lecturer of Web Technology and Cloud Computing
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Member Cards */}
           <div>
             <h2 className="text-xl font-semibold text-blue-600 mb-6 text-center">
@@ -637,7 +648,9 @@ export default function About() {
                   alt="Member 4"
                   className="h-24 w-24 rounded-full object-cover mb-4"
                 />
-                <h4 className="text-lg font-medium text-gray-900">Preap Dina</h4>
+                <h4 className="text-lg font-medium text-gray-900">
+                  Preap Dina
+                </h4>
               </div>
               {/* Member 5 */}
               <div className="bg-white rounded-2xl shadow-lg flex flex-col items-center p-6">
@@ -646,9 +659,7 @@ export default function About() {
                   alt="Member 5"
                   className="h-24 w-24 rounded-full object-cover mb-4"
                 />
-                <h4 className="text-lg font-medium text-gray-900">
-                  Kouk Lin
-                </h4>
+                <h4 className="text-lg font-medium text-gray-900">Kouk Lin</h4>
               </div>
             </div>
           </div>
